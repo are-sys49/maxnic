@@ -4,10 +4,34 @@ import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { Linking } from 'react-native';
-import QRCode from 'react-native-qrcode-svg'; // Asegúrate de instalar esta librería si la necesitas
+import QRCode from 'react-native-qrcode-svg'; 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import { useEffect } from 'react';
 
 export default function Perfil({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
+  const [userData, setUserData] = useState({
+    nombre: '',
+    app: '',
+    matricula: '',
+  });
+
+  useEffect(() => {
+      const loadUserData = async () => {
+        try {
+          const nombre = await AsyncStorage.getItem('nombre');
+          const app = await AsyncStorage.getItem('app');
+          const matricula = await AsyncStorage.getItem('matricula');
+          if (nombre && app && matricula) {
+            setUserData({ nombre, app, matricula });
+          } 
+        } catch (error) {
+          console.log('Error loading user data:', error);
+        }
+  };
+      loadUserData();
+    }, []);
 
   return (
     <ScrollView style={styles.container}>
@@ -26,9 +50,9 @@ export default function Perfil({ navigation }) {
       <Image source={require('../../assets/Leon.png')} style={styles.avatar} />
 
       {/* Nombre y Datos */}
-      <Text style={styles.name}>Álvaro Díaz</Text>
+      <Text style={styles.name}>{userData.nombre} {userData.app}</Text>
       <Text style={styles.school}>Academia Nacional de Bomberos G17</Text>
-      <Text style={styles.code}>C U D 2 0 2 5 0 0 0 3 0 5</Text>
+      <Text style={styles.code}>{userData.matricula}</Text>
 
       {/* Estadísticas */}
       <View style={styles.statsContainer}>
@@ -80,7 +104,7 @@ export default function Perfil({ navigation }) {
     <View style={customModal.card}>
       <Image source={require('../../assets/Leon.png')} style={customModal.cardImage} />
       <View style={customModal.cardInfo}>
-        <Text style={customModal.name}>Álvaro Díaz</Text>
+        <Text style={customModal.name}>{userData.nombre} {userData.app}</Text>
         <Text style={customModal.center}>Centro Universitario DIPA</Text>
         <Text style={customModal.username}>Maxnic</Text>
       </View>

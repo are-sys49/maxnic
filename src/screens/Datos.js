@@ -1,19 +1,53 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Image } from "expo-image";
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 export default function Datos({ navigation }) {
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const obtenerDatos = async () => {
+      try {
+        const matriculaGuardada = await AsyncStorage.getItem('matricula');
+        if (!matriculaGuardada) {
+          alert('No se encontró la matrícula almacenada');
+          return;
+        }
+
+        const response = await axios.get(`http://192.168.100.35:3000/Datos/${matriculaGuardada}`);
+        setUserData(response.data.user);
+      } catch (error) {
+        console.error('Error al obtener datos del usuario:', error);
+        alert('Error al obtener datos del usuario');
+      }
+    };
+
+    obtenerDatos();
+  }, []);
+
+  if (!userData) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.dialogText}>Cargando datos...</Text>
+      </View>
+    );
+  }
+
+  const { nombre = '', app = '', apm = '', matricula = '', gen = '', academia = '', sede = '' } = userData;
+  const nombreCompleto = `${nombre} ${app} ${apm}`.trim();
+
   return (
     <View style={styles.container}>
       {/* Barra de progreso */}
       <View style={styles.progressBarContainer}>
-        <View style={[styles.progressBar, { width: '60%' }]} /> {/* 60% progreso */}
+        <View style={[styles.progressBar, { width: '60%' }]} />
       </View>
 
       {/* Bienvenida */}
       <View style={styles.dialogContainer}>
-        <Text style={styles.dialogText}>¡Bienvenido a tu manada, Álvaro Díaz!</Text>
+        <Text style={styles.dialogText}>¡Bienvenido a tu manada, {nombreCompleto}!</Text>
       </View>
 
       {/* Imagen del león */}
@@ -24,11 +58,11 @@ export default function Datos({ navigation }) {
 
       {/* Información del usuario */}
       <View style={styles.infoContainer}>
-        <Text style={styles.infoText}>Nombre: José Álvaro Díaz Plascencia</Text>
-        <Text style={styles.infoText}>Rol: Bombero</Text>
-        <Text style={styles.infoText}>Generación: Generación 17</Text>
-        <Text style={styles.infoText}>ID: CUD2025000305</Text>
-        <Text style={styles.infoText}>Sede: Guadalajara, Jal.</Text>
+        <Text style={styles.infoText}>{nombreCompleto}</Text>
+        <Text style={styles.infoText}>Academia: {academia}</Text>
+        <Text style={styles.infoText}>Generación: {gen}</Text>
+        <Text style={styles.infoText}>Matrícula: {matricula}</Text>
+        <Text style={styles.infoText}>Sede: {sede}</Text>
       </View>
 
       {/* Botón CONTINUAR */}
@@ -86,7 +120,7 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 10,
     marginVertical: 15,
-    alignItems: 'flex-start', // Alinear texto a la izquierda
+    alignItems: 'flex-start',
   },
   infoText: {
     fontSize: 16,

@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { Image } from "expo-image";
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+    
 
 export default function Continuar({ navigation }) {
   // Estado para controlar el progreso
@@ -8,12 +11,30 @@ export default function Continuar({ navigation }) {
   const [matricula, setMatricula] = useState(""); // Estado para matrícula
   const [password, setPassword] = useState(""); // Estado para contraseña
 
-  const avanzarPantalla = () => {
-    if (progress < 1) {
-      setProgress(progress + 0.20); 
+ const avanzarPantalla = async () => {
+  try {
+    const response = await axios.post('http://192.168.100.35:3000/Continuar', {
+      matricula,
+      password
+    });
+
+    console.log('Respuesta del servidor:', response.data);
+    if(progress < 1 ){
+      await AsyncStorage.setItem('matricula', matricula);
+      setProgress(progress + 0.20); // Aumentar el progreso
       navigation.navigate('Datos'); // pantalla siguiente
     }
-  };
+  } catch (error) {
+    console.error('Error al enviar la contraseña', error);
+    if (error.response && error.response.data?.message) {
+      alert(error.response.data.message);
+    } else {
+      alert('Error al conectar con el servidor.');
+    }
+  }
+
+};
+
 
   return (
     <View style={styles.container}>

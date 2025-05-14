@@ -12,6 +12,7 @@ import Cursos from '../screens/Cursos'
 import Perfil from '../screens/Perfil';
 
 
+
 const Stack = createNativeStackNavigator();
 
 export default function AppNavigator() {

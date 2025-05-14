@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Login({ navigation }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -17,21 +18,26 @@ export default function Login({ navigation }) {
   const [password, setPassword] = useState('');
 
   const handleLogin = async () => {
-    try {
-      const response = await axios.post('http://192.168.100.35:3000/login', {
+    
+      const response = await axios.post('http://192.168.100.35:3000/Login', {
         matricula,
         password,
       });
 
-      if (response.data.success) {
-        navigation.navigate('Home', { user: response.data.user });
+      if(response.data.success) {
+        const { token, user } = response.data;
+        await AsyncStorage.multiSet([
+          ['token', token],
+          ['nombre', user.nombre],
+          ['app', user.app],
+          ['matricula', user.matricula],
+       ]);
+        navigation.navigate('Home');
       } else {
         Alert.alert('Error', response.data.message);
       }
-    } catch (error) {
-      console.error(error);
-      Alert.alert('Error', 'No se pudo conectar al servidor');
-    }
+
+     
   };
 
   return (

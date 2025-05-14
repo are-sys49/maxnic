@@ -2,10 +2,36 @@ import React from 'react';
 import { View, Text, Image, TouchableWithoutFeedback, StyleSheet, ScrollView } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Cursos from './Cursos';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function HomeScreen({ navigation }) {
+  const [userData, setUserData] = useState({
+    nombre: '',
+    app: '',
+    matricula: '',
+
+
+  });
+
+  useEffect(() => {
+    const loadUserData = async () => {
+      try {
+        const nombre = await AsyncStorage.getItem('nombre');
+        const app = await AsyncStorage.getItem('app');
+        const matricula = await AsyncStorage.getItem('matricula');
+        if (nombre && app && matricula) {
+          setUserData({ nombre, app, matricula });
+        } 
+      } catch (error) {
+        console.log('Error loading user data:', error);
+      }
+};
+    loadUserData();
+  }, []);
+
   const [menuVisible, setMenuVisible] = useState(false);
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
@@ -52,7 +78,7 @@ export default function HomeScreen({ navigation }) {
       <View style={styles.profile}>
         <Image source={require('../../assets/Leon.png')} style={styles.avatar} />
         <View style={styles.info}>
-          <Text style={styles.name}>Álvaro Díaz</Text>
+          <Text style={styles.name}>{userData.nombre} {userData.app}</Text>
           <Text style={styles.school}>Centro Universitario DIPA</Text>
         </View>
       </View>
