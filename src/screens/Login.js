@@ -1,13 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  SafeAreaView,
-  Alert
-} from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView, Alert} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -18,31 +10,38 @@ export default function Login({ navigation }) {
   const [password, setPassword] = useState('');
 
   const handleLogin = async () => {
-    
-      const response = await axios.post('http://192.168.100.35:3000/Login', {
-        matricula,
-        password,
-      });
+  try {
+    const response = await axios.post('http://192.168.100.35:3000/Login', {
+      matricula,
+      password,
+    });
 
-      if(response.data.success) {
-        const { token, user } = response.data;
-        await AsyncStorage.multiSet([
-          ['token', token],
-          ['nombre', user.nombre],
-          ['app', user.app],
-          ['matricula', user.matricula],
-       ]);
-        navigation.navigate('Home');
-      } else {
-        Alert.alert('Error', response.data.message);
-      }
+    if (response.data.success) {
+      const { user } = response.data;
 
-     
-  };
+      await AsyncStorage.multiSet([
+        ['nombre', user.nombre],
+        ['app', user.app],
+        ['matricula', user.matricula],
+        ['academia', user.academia],
+        ['sede', user.sede],
+      ]);
+
+      // Navega a Home
+      navigation.navigate('Home');
+    } else {
+      Alert.alert('Error', response.data.message || 'Credenciales incorrectas');
+    }
+  } catch (error) {
+    console.log('Error en login:', error.message);
+    Alert.alert('Error', 'No se pudo conectar con el servidor');
+  }
+};
+
 
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('Inicio')}>
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
         <Ionicons name="arrow-back-outline" size={24} color="#000" />
       </TouchableOpacity>
 

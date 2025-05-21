@@ -15,6 +15,9 @@ export default function Perfil({ navigation }) {
     nombre: '',
     app: '',
     matricula: '',
+    academia: '',
+    sede: '',
+  
   });
 
   useEffect(() => {
@@ -23,8 +26,10 @@ export default function Perfil({ navigation }) {
           const nombre = await AsyncStorage.getItem('nombre');
           const app = await AsyncStorage.getItem('app');
           const matricula = await AsyncStorage.getItem('matricula');
-          if (nombre && app && matricula) {
-            setUserData({ nombre, app, matricula });
+          const academia = await AsyncStorage.getItem('academia');
+          const sede = await AsyncStorage.getItem('sede');
+          if (nombre && app && matricula && academia && sede) {
+            setUserData({ nombre, app, matricula, academia, sede });
           } 
         } catch (error) {
           console.log('Error loading user data:', error);
@@ -51,14 +56,14 @@ export default function Perfil({ navigation }) {
 
       {/* Nombre y Datos */}
       <Text style={styles.name}>{userData.nombre} {userData.app}</Text>
-      <Text style={styles.school}>Academia Nacional de Bomberos G17</Text>
+      <Text style={styles.school}>{userData.academia}</Text>
       <Text style={styles.code}>{userData.matricula}</Text>
 
       {/* Estadísticas */}
       <View style={styles.statsContainer}>
         <View style={styles.statBox}>
           <Text style={styles.statLabel}>Sede</Text>
-          <Text style={styles.statValue}>Guadalajara</Text>
+          <Text style={styles.statValue}>{userData.sede}</Text>
         </View>
         <View style={styles.statBox}>
           <Text style={styles.statLabel}>Siguiendo</Text>
@@ -168,7 +173,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: 20,
+    marginTop: 40,
   },
   speechBubble: {
     backgroundColor: '#fff',
@@ -247,6 +253,7 @@ const customModal = StyleSheet.create({
     backgroundColor: '#fff',
     padding: 16,
     alignItems: 'center',
+    marginTop: 40,
   },
   backButton: {
     position: 'absolute',
@@ -314,7 +321,7 @@ const customModal = StyleSheet.create({
   iconLabel: {
     fontSize: 12,
     color: '#555',
-    marginTop: 4,
+    marginTop: 6,
   },
   bottomOptions: {
     marginTop: 40,
