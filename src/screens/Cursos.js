@@ -1,119 +1,65 @@
-import React, { useState, useRef } from 'react';
-import { 
-  StyleSheet, 
-  Text, 
-  View, 
-  TouchableOpacity, 
-  Image, 
-  ScrollView,
-  SafeAreaView,
-  Dimensions,
-  StatusBar,
-  Animated,
-  Easing,
-  Modal
-} from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import { StyleSheet, Text,  View, TouchableOpacity, Image, ScrollView, SafeAreaView, Dimensions, StatusBar, Animated, Easing, Modal} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 
+const frases = [
+  "¡Ruge con conocimiento! Un león bien capacitado siempre está un paso adelante.",
+  "La sabiduría es la mejor defensa. Prepárate para cualquier desafío.",
+  "La educación es la clave para sobrevivir en la jungla de la vida.",
+  "Conocimiento es poder. ¡Prepárate para la aventura!",
+  "La preparación es la mejor defensa. ¡Conviértete en un experto!",
+  "La curiosidad es el primer paso hacia el conocimiento. ¡Explora y aprende!",
+  "La naturaleza es tu maestra. Aprende de ella y sobrevive.",
+  "La valentía no es la ausencia de miedo, sino la capacidad de enfrentarlo con conocimiento.",
+  "La supervivencia es un arte. Aprende las técnicas y conviértete en un maestro.",
+];
+
+
 export default function App({ navigation }) {
   const [selectedCourse, setSelectedCourse] = useState(null);
+  const [fraseActual, setFraseActual] = useState('');
+  
+  const obtenerFraseAleatoria = () => {
+    let nuevaFrase = fraseActual;
+    while (nuevaFrase === fraseActual) {
+      const indice = Math.floor(Math.random() * frases.length);
+      nuevaFrase = frases[indice];
+  }
+    return nuevaFrase;
+  };
 
-  // Datos completos de los cursos
-  const courses = [
-    {
-      id: 1,
-      title: "Animales Peligrosos",
-      icon: "🕷️",
-      color: "#1a397c",
-      details: {
-        description: "Aprende a identificar, prevenir y actuar ante encuentros con animales venenosos o agresivos. Incluye técnicas de primeros auxilios y protocolos de seguridad.",
-        modality: "PRESENCIAL",
-        duration: "4 HORAS",
-        location: "SEDE: GUADALAJARA",
-        callToAction: "Información del curso",
-        schedule: "Sábados 9:00 - 13:00",
-        requirements: "Ropa cómoda y cuaderno de notas"
+  useEffect(() => {
+
+    setFraseActual(obtenerFraseAleatoria());
+
+    const interval = setInterval(() => {
+      setFraseActual(obtenerFraseAleatoria());
+    }, 5000); // Cambia la frase cada 5 segundos
+
+    return () => clearInterval(interval);
+  }, []);
+
+
+  const [courses, setCourses] = useState([]);
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchCourses = async () => {
+        try {
+          const response = await fetch(`http://192.168.100.35:3000/CursosSede/${matricula}`);
+          const data = await response.json();
+          setCourses(data.cursos);
+        }
+        catch (error) {
+          console.error('Error fetching courses:', error);
+        }
       }
-    },
-    { 
-      id: 2, 
-      title: "Supervivencia en Naturaleza", 
-      icon: "🦊", 
-      color: "#1a397c",
-      details: {
-        description: "Técnicas esenciales de supervivencia en entornos naturales. Aprenderás a conseguir agua, hacer fuego, construir refugios y orientarte sin equipamiento.",
-        modality: "HÍBRIDO",
-        duration: "6 HORAS",
-        location: "SEDE: CDMX / ONLINE",
-        callToAction: "Información del curso",
-        schedule: "Viernes 16:00 - 20:00",
-        requirements: "Ninguno"
-      }
-    },
-    { 
-      id: 3, 
-      title: "Primeros Auxilios Avanzados", 
-      icon: "🦁", 
-      color: "#1a397c",
-      details: {
-        description: "Curso avanzado de primeros auxilios para situaciones críticas. Incluye RCP, manejo de hemorragias y atención a traumatismos.",
-        modality: "PRESENCIAL",
-        duration: "8 HORAS",
-        location: "SEDE: MONTERREY",
-        callToAction: "Información del curso",
-        schedule: "Domingos 10:00 - 18:00",
-        requirements: "Certificado básico de primeros auxilios"
-      }
-    },
-    { 
-      id: 4, 
-      title: "Manejo de Crisis", 
-      icon: "🐊", 
-      color: "#1a397c",
-      details: {
-        description: "Desarrolla habilidades para manejar situaciones de crisis y emergencias. Trabajo en equipo, toma de decisiones bajo presión y comunicación efectiva.",
-        modality: "VIRTUAL",
-        duration: "3 HORAS",
-        location: "PLATAFORMA: ZOOM",
-        callToAction: "Información del curso",
-        schedule: "Miércoles 18:00 - 21:00",
-        requirements: "Conexión a internet estable"
-      }
-    },
-    { 
-      id: 5, 
-      title: "Rastreo y Seguimiento", 
-      icon: "🐘", 
-      color: "#1a397c",
-      details: {
-        description: "Aprende técnicas profesionales de rastreo y seguimiento en diferentes terrenos. Ideal para rescatistas y equipos de búsqueda.",
-        modality: "PRESENCIAL",
-        duration: "5 HORAS",
-        location: "SEDE: GUADALAJARA",
-        callToAction: "Información del curso",
-        schedule: "Jueves 14:00 - 19:00",
-        requirements: "Botas para campo"
-      }
-    },
-    { 
-      id: 6, 
-      title: "Defensa Personal", 
-      icon: "🦅", 
-      color: "#1a397c",
-      details: {
-        description: "Técnicas básicas y avanzadas de defensa personal adaptadas a diferentes contextos y situaciones de peligro.",
-        modality: "PRESENCIAL",
-        duration: "4 HORAS",
-        location: "SEDE: CDMX",
-        callToAction: "Información del curso",
-        schedule: "Martes y Jueves 17:00 - 19:00",
-        requirements: "Ropa deportiva"
-      }
-    },
-  ];
+      fetchCourses();
+    }
+    , [])
+  );
 
   const FlipCard = ({ course }) => {
     const animatedValue = useRef(new Animated.Value(0)).current;
@@ -300,9 +246,7 @@ export default function App({ navigation }) {
         />
         <View style={styles.speechBubble}>
           <Text style={styles.speechBubbleText}>
-            "¡Ruge con conocimiento! {"\n"}
-            Un león bien capacitado siempre {"\n"}
-            está un paso adelante.
+            {fraseActual}
           </Text>
         </View>
       </View>

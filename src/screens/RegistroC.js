@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
-const RegistroC = () => {
+const RegistroC = ({ navigation }) => {
   return (
     <View style={styles.container}>
       {/* Barra de progreso con estrella */}
@@ -17,6 +17,14 @@ const RegistroC = () => {
 
       {/* Imagen del león */}
       <Image source={require('../../assets/alex.png')} style={styles.lionImage} />
+
+      {/* Botón Continuar */}
+      <TouchableOpacity
+        style={styles.continueButton}
+        onPress={() => navigation.navigate('Home')}
+      >
+        <Text style={styles.continueButtonText}>Continuar</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -76,6 +84,18 @@ const styles = StyleSheet.create({
     width: 500,
     height: 350,
     resizeMode: 'contain',
+  },
+  continueButton: {
+    marginTop: 20,
+    backgroundColor: '#132257',
+    paddingVertical: 15,
+    paddingHorizontal: 50,
+    borderRadius: 10,
+  },
+  continueButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 });
 

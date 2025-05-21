@@ -18,6 +18,22 @@ export default function Continuar({ navigation }) {
       password
     });
 
+    const user = response.data.user;
+    if (!user) {
+      alert('No se encontró el usuario');
+      return;
+    }
+
+    await AsyncStorage.multiSet([
+      ['nombre', user.nombre],
+      ['app', user.app],
+      ['apm', user.apm],
+      ['matricula', user.matricula],
+      ['gen', user.gen],
+      ['academia', user.academia],
+      ['sede', user.sede],
+    ]);
+
     console.log('Respuesta del servidor:', response.data);
     if(progress < 1 ){
       await AsyncStorage.setItem('matricula', matricula);
