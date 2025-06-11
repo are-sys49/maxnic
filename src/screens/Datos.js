@@ -47,7 +47,7 @@ export default function Datos({ navigation }) {
 
       {/* Bienvenida */}
       <View style={styles.dialogContainer}>
-        <Text style={styles.dialogText}>¡Bienvenido a tu manada, {nombreCompleto}!</Text>
+        <Text style={styles.dialogText}>¡Bienvenido a tu manada, {nombre} {app}!</Text>
       </View>
 
       {/* Imagen del león */}
@@ -56,14 +56,27 @@ export default function Datos({ navigation }) {
         style={styles.image}
       />
 
-      {/* Información del usuario */}
-      <View style={styles.infoContainer}>
-        <Text style={styles.infoText}>{nombreCompleto}</Text>
-        <Text style={styles.infoText}>Academia: {academia}</Text>
-        <Text style={styles.infoText}>Generación: {gen}</Text>
-        <Text style={styles.infoText}>Matrícula: {matricula}</Text>
-        <Text style={styles.infoText}>Sede: {sede}</Text>
+      {/* Recuadros de datos */}
+      <View style={styles.card}>
+       <Text style={styles.cardText}>{nombreCompleto}</Text>
       </View>
+   
+      <View style={styles.row}>
+        <View style={styles.cardHalf}>
+          <Text style={styles.cardText}>{academia}</Text>
+        </View>
+        <View style={styles.cardHalf}>
+          <Text style={styles.cardText}>{gen}</Text>
+        </View>
+      </View>
+      <View style={styles.card}>
+        <Text style={styles.cardText}>{matricula}</Text>
+      </View>
+      <View style={styles.card}>
+        <Text style={styles.cardText}>{sede}</Text>
+      </View>
+     
+
 
       {/* Botón CONTINUAR */}
       <TouchableOpacity
@@ -114,18 +127,34 @@ const styles = StyleSheet.create({
     height: 120,
     marginVertical: 20,
   },
-  infoContainer: {
+  card: {
+     backgroundColor: '#f3f3f3',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 12,
+    marginVertical: 6,
     width: '90%',
-    backgroundColor: '#f5f5f5',
-    padding: 20,
-    borderRadius: 10,
-    marginVertical: 15,
-    alignItems: 'flex-start',
+    alignItems: 'center',
   },
-  infoText: {
-    fontSize: 16,
-    color: '#333',
-    marginVertical: 5,
+  cardHalf: {
+     backgroundColor: '#f3f3f3',
+    paddingVertical: 12,
+    paddingHorizontal: 15,
+    borderRadius: 12,
+    marginVertical: 6,
+    width: '47%',
+    alignItems: 'center',
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '90%',
+  },
+  cardText: {
+     fontSize: 16,
+    fontWeight: '600',
+    color: '#1a1a1a',
+    textAlign: 'center',
   },
   continueButton: {
     width: '80%',

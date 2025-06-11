@@ -17,23 +17,44 @@ const db = await mysql.createConnection({
   database: 'prueba_dipa2',
 });
 
+
 app.post('/Login', async (req, res) => {
   const { matricula, password } = req.body;
-  
-  try {
-    const [results] = await db.query('SELECT * FROM usuarios WHERE matricula = ?', [matricula]);
 
-    if (results.length > 0 && results[0].password === password) {
-      res.json({
-        success: true,
-        message: 'Login exitoso',
-        user: {
-          id: results[0].id,
-          nombre: results[0].nombre,
-          app: results[0].app,
-          matricula: results[0].matricula,
-        },
-      });
+  try {
+    const [results] = await db.query(`
+      SELECT u.*, a.nombre_academia, s.nombre_sede
+      FROM usuarios u
+      INNER JOIN academias a ON u.id_academia = a.id_academia
+      INNER JOIN sede s ON u.id_sede = s.id_sede
+      WHERE u.matricula = ?
+    `, [matricula]);
+
+    if (results.length > 0) {
+      console.log('Usuario encontrado:', results[0].matricula);
+      console.log('Password recibido:', password);
+      console.log('Password en DB:', results[0].password);
+
+      const match = await bcrypt.compare(password, results[0].password);
+
+      console.log('¿Contraseña coincide?', match);
+
+      if (match) {
+        res.json({
+          success: true,
+          message: 'Login exitoso',
+          user: {
+            matricula: results[0].matricula,
+            nombre: results[0].nombre,
+            app: results[0].app,
+            apm: results[0].apm,
+            academia: results[0].nombre_academia,
+            sede: results[0].nombre_sede,
+          },
+        });
+      } else {
+        res.json({ success: false, message: 'Matrícula o contraseña incorrecta' });
+      }
     } else {
       res.json({ success: false, message: 'Matrícula o contraseña incorrecta' });
     }
@@ -41,6 +62,9 @@ app.post('/Login', async (req, res) => {
     res.status(500).json({ message: 'Error en el servidor', error: err });
   }
 });
+
+
+
 
 
 // Ruta para registrar o actualizar contraseña si aún no existe
@@ -66,7 +90,33 @@ app.post('/Continuar', async (req, res) => {
       matricula,
     ]);
 
-    res.status(200).json({ message: 'Contraseña registrada exitosamente.' });
+   const [userRows] = await db.query(
+     `SELECT 
+         u.matricula, u.nombre, u.app, u.apm, u.gen,
+         a.nombre_academia,
+         s.nombre_sede
+       FROM usuarios u
+       JOIN academias a ON u.id_academia = a.id_academia
+       JOIN sede s ON u.id_sede = s.id_sede
+       WHERE u.matricula = ?`,
+      [matricula]
+    );
+     if (userRows.length === 0) {
+      return res.status(404).json({ message: 'Usuario actualizado pero no encontrado' });
+    }
+
+    const user = {
+      matricula: userRows[0].matricula,
+      nombre: userRows[0].nombre,
+      app: userRows[0].app,
+      apm: userRows[0].apm,
+      gen: userRows[0].gen,
+      academia: userRows[0].nombre_academia,
+      sede: userRows[0].nombre_sede,
+    };
+
+
+    res.status(200).json({ message: 'Contraseña registrada exitosamente.', user });
   } catch (err) {
     console.error('Error al insertar la contraseña:', err);
     res.status(500).json({ message: 'Error del servidor al insertar la contraseña.' });
@@ -114,3 +164,30 @@ app.get('/Datos/:matricula', async (req, res) => {
     res.status(500).json({ message: 'Error interno del servidor' });
   }
 });
+
+app.get('/CursosSede/:matricula', async (req, res) => {
+  const matricula = req.params.matricula;
+  try {
+    const [userRows] = await db.query(
+      'SELECT id_sede FROM usuarios WHERE matricula = ?',
+      [matricula]
+    );
+
+    if (userRows.length === 0) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+
+    const idSede = userRows[0].id_sede;
+
+    const [academias] = await db.query(
+      'SELECT * FROM academias WHERE id_sede = ?',
+      [idSede]
+    );
+
+    res.json({ cursos: rows });
+  } catch (error) {
+    console.error('Error al obtener cursos:', error);
+    res.status(500).json({ message: 'Error interno del servidor' });
+  }
+}
+);
