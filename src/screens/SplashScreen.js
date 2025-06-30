@@ -13,7 +13,11 @@ export default function Splash({ navigation }) {
         <View style={styles.container}>
 
             <Image
+<<<<<<< Updated upstream
                 source={require('../../assets/leon.gif')}
+=======
+                source={require('../../assets/AnimacionFondoAzul.gif')}
+>>>>>>> Stashed changes
                 style={styles.image}
                 resizeMode="contain"
             />
@@ -27,7 +31,11 @@ export default function Splash({ navigation }) {
 
 const styles = StyleSheet.create({
     container: {
+<<<<<<< Updated upstream
         flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#263278'
+=======
+        flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#2e3871'
+>>>>>>> Stashed changes
     },
     title: {
         fontSize: 70,

@@ -2,8 +2,13 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Image as ExpoImage } from 'expo-image';
 
+<<<<<<< Updated upstream
 export default function Avatar({ navigation }) {
   const [selectedAccessories, setSelectedAccessories] = useState([]);
+=======
+const screenWidth = Dimensions.get('window').width;
+const SERVER_URL = 'http://192.168.100.68:3000'; // Cambia por tu URL del servidor
+>>>>>>> Stashed changes
 
   const accessories = [
     { 
@@ -151,8 +156,48 @@ const styles = StyleSheet.create({
   },
   progressBar: {
     height: '100%',
+<<<<<<< Updated upstream
     backgroundColor: '#1A237E',
     borderRadius: 70,
+=======
+    backgroundColor: '#2E3870',
+    borderRadius: 4,
+  },
+  completedMessageContainer: {
+    backgroundColor: '#e8f5e8',
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    marginHorizontal: 20,
+    marginBottom: 15,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#4caf50',
+  },
+  completedMessageText: {
+    color: '#2e7d32',
+    fontSize: 14,
+    textAlign: 'center',
+    fontWeight: '500',
+  },
+  completedMessageSubtext: {
+    color: '#2e7d32',
+    fontSize: 12,
+    textAlign: 'center',
+    marginTop: 4,
+    fontWeight: '400',
+  },
+  questionContainer: {
+    paddingHorizontal: 20,
+    marginBottom: 20,
+    zIndex: 9,
+    position: 'relative',
+  },
+  welcomeContainer: {
+    paddingHorizontal: 20,
+    marginBottom: 20,
+    zIndex: 9,
+    position: 'relative',
+>>>>>>> Stashed changes
   },
   speechBubble: {
     backgroundColor: '#fff',
@@ -160,12 +205,103 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderColor: '#aaa',
     borderWidth: 1,
+<<<<<<< Updated upstream
     alignSelf: 'center',
     marginVertical: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
+=======
+    borderColor: '#e0e0e0',
+    position: 'relative',
+  },
+  welcomeBubble: {
+    backgroundColor: '#e3f2fd',
+    borderRadius: 20,
+    padding: 15,
+    borderWidth: 1,
+    borderColor: '#2E3870',
+    position: 'relative',
+  },
+  questionText: {
+    fontSize: 16,
+    color: '#333',
+    textAlign: 'center',
+    lineHeight: 22,
+    zIndex: 1,
+  },
+  questionSubtext: {
+    fontSize: 12,
+    color: '#666',
+    textAlign: 'center',
+    marginTop: 8,
+    fontStyle: 'italic',
+  },
+  welcomeText: {
+    fontSize: 16,
+    color: '#2E3870',
+    textAlign: 'center',
+    lineHeight: 22,
+    zIndex: 1,
+    fontWeight: '500',
+  },
+  mainContent: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+  },
+  avatarImage: {
+    width: 500,
+    height: 737,
+  },
+  accessoriesContainer: {
+    position: 'absolute',
+    width: 350,
+    height: 340,
+    right: 0,
+  },
+  accessoryItem: {
+    position: 'absolute',
+    width: 70,
+    height: 70,
+    backgroundColor: '#fff',
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  accessoryTopRight: {
+    top: 20,
+    right: 20,
+  },
+  accessoryMiddleRight: {
+    top: 120,
+    right: 20,
+  },
+  accessoryBottomRight: {
+    bottom: 50,
+    right: 20,
+  },
+  accessoryIcon: {
+    width: 35,
+    height: 35,
+  },
+  buttonContainer: {
+    paddingHorizontal: 20,
+    paddingBottom: 30,
+  },
+  startButton: {
+    backgroundColor: '#2E3870',
+    borderRadius: 25,
+    paddingVertical: 15,
+    paddingHorizontal: 40,
+>>>>>>> Stashed changes
     elevation: 3,
   },
   speechText: {

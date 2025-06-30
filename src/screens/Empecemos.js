@@ -58,10 +58,21 @@ const styles = StyleSheet.create({
     height: 200,
   },
   continueButton: {
+<<<<<<< Updated upstream
     backgroundColor: '#0056b3',
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 25,
+=======
+    backgroundColor: '#274BAB',
+    paddingVertical: 15,
+    paddingHorizontal: 40,
+    borderRadius: 30,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+>>>>>>> Stashed changes
     elevation: 5,
   },
   continueButtonText: {

@@ -16,7 +16,11 @@ export default function Datos({ navigation }) {
           return;
         }
 
+<<<<<<< Updated upstream
         const response = await axios.get(`http://192.168.100.35:3000/Datos/${matriculaGuardada}`);
+=======
+        const response = await axios.get(`http://192.168.100.68:3000/Datos/${matriculaGuardada}`);
+>>>>>>> Stashed changes
         setUserData(response.data.user);
       } catch (error) {
         console.error('Error al obtener datos del usuario:', error);
@@ -52,7 +56,11 @@ export default function Datos({ navigation }) {
 
       {/* Imagen del león */}
       <Image
+<<<<<<< Updated upstream
         source={require('../../assets/leon.gif')} 
+=======
+        source={require('../../assets/animacionInicio.gif')} 
+>>>>>>> Stashed changes
         style={styles.image}
       />
 
@@ -98,15 +106,16 @@ const styles = StyleSheet.create({
   },
   progressBarContainer: {
     width: '100%',
-    height: 30,
+    height: 8,
     backgroundColor: '#e0e0e0',
     borderRadius: 70,
     marginTop: 75,
+    marginBottom: 20,
     overflow: 'hidden',
   },
   progressBar: {
     height: '100%',
-    backgroundColor: '#0056b3',
+    backgroundColor: '#274BAB',
   },
   dialogContainer: {
     marginVertical: 20,
@@ -119,7 +128,7 @@ const styles = StyleSheet.create({
   dialogText: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#0056b3',
+    color: '#274BAB',
     textAlign: 'center',
   },
   image: {
@@ -128,20 +137,20 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   card: {
-     backgroundColor: '#f3f3f3',
+    backgroundColor: '#f3f3f3',
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 12,
-    marginVertical: 6,
+    marginVertical: 10,
     width: '90%',
     alignItems: 'center',
   },
   cardHalf: {
-     backgroundColor: '#f3f3f3',
+    backgroundColor: '#f3f3f3',
     paddingVertical: 12,
     paddingHorizontal: 15,
     borderRadius: 12,
-    marginVertical: 6,
+    marginVertical: 10,
     width: '47%',
     alignItems: 'center',
   },
@@ -153,13 +162,14 @@ const styles = StyleSheet.create({
   cardText: {
      fontSize: 16,
     fontWeight: '600',
-    color: '#1a1a1a',
+    color: '#274BAB',
     textAlign: 'center',
   },
   continueButton: {
     width: '80%',
+    marginTop: 30,
     height: 50,
-    backgroundColor: '#0056b3',
+    backgroundColor: '#274BAB',
     borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',

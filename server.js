@@ -4,8 +4,10 @@ import cors from 'cors';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
+
 const app = express();
 const PORT = 3000;
+
 
 app.use(cors());
 app.use(express.json());
@@ -189,5 +191,88 @@ app.get('/CursosSede/:matricula', async (req, res) => {
     console.error('Error al obtener cursos:', error);
     res.status(500).json({ message: 'Error interno del servidor' });
   }
+<<<<<<< Updated upstream
 }
 );
+=======
+});
+
+app.post('/api/users/avatar', async (req, res) => {
+  try {
+    const {matricula, avatarPng, avatarPngName, accessory } = req.body;
+
+    if (!matricula) {
+      return res.status(400).json({ message: 'Falta la matrícula' });
+    }
+
+    // Insertar avatar en la tabla usuarios_avatar
+    const query = `
+     UPDATE usuarios
+     SET avatarPng = ?, avatarPngName = ?, accessory = ?
+     WHERE matricula = ?
+     `;
+
+const [result] = await db.query(query, [avatarPng, avatarPngName, accessory, matricula]);
+
+
+    res.json({ success: true, message: 'Avatar guardado correctamente', data: { affectedRows: result.affectedRows } });
+  } catch (error) {
+    console.error('Error al guardar el avatar:', error);
+    res.status(500).json({ success: false, message: 'Error del servidor al guardar el avatar.' });
+  }
+});
+app.get('/api/sedes', async (req, res) => {
+    try {
+       
+        const [rows] = await db.query(`
+            SELECT 
+                id_sede,
+                nombre_sede
+            FROM sede 
+            ORDER BY nombre_sede ASC
+        `);
+        
+        console.log('Número de sedes encontradas:', rows.length);
+        console.log('Datos completos:', rows);
+        
+        res.json(rows);
+        
+    } catch (error) {
+        console.error('Error completo:', error);
+        res.status(500).json({
+            error: 'Error al obtener sedes',
+            details: error.message
+        });
+    }
+});
+app.get('/api/cursos/sede/:id_sede', async (req, res) => {
+    try {
+        const { id_sede } = req.params;
+        
+        const [rows] = await db.query(`
+            SELECT 
+                id_curso,
+                nombre_curso,
+                descripcion,
+                modalidad,
+                horas
+            FROM cursos
+            WHERE id_sede = ?
+            ORDER BY nombre_curso ASC
+        `, [id_sede]);
+
+        res.json(rows);
+        
+    } catch (error) {
+        console.error('Error al obtener cursos:', error);
+        res.status(500).json({
+            error: 'Error al obtener cursos'
+        });
+    }
+});
+ app.listen(PORT, () => {
+    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  });
+
+
+>>>>>>> Stashed changes

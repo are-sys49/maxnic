@@ -1,13 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
+<<<<<<< Updated upstream
 const RegistroC = ({ navigation }) => {
+=======
+const RegistroC = () => {
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    // Navegar automáticamente a HomeScreen después de 3 segundos (3000 ms)
+    const timer = setTimeout(() => {
+      navigation.navigate('Home');
+    }, 3000);
+
+    // Limpiar el timeout si el componente se desmonta antes
+    return () => clearTimeout(timer);
+  }, [navigation]);
+
+>>>>>>> Stashed changes
   return (
     <View style={styles.container}>
       {/* Barra de progreso con estrella */}
       <View style={styles.progressBarContainer}>
         <View style={styles.progressBar} />
-        <Image source={require('../../assets/Estrella.png')} style={styles.starIcon} />
       </View>
 
       {/* Globo de diálogo */}
@@ -16,8 +32,9 @@ const RegistroC = ({ navigation }) => {
       </View>
 
       {/* Imagen del león */}
-      <Image source={require('../../assets/alex.png')} style={styles.lionImage} />
+      <Image source={require('../../assets/LeonOficial.png')} style={styles.lionImage} />
 
+<<<<<<< Updated upstream
       {/* Botón Continuar */}
       <TouchableOpacity
         style={styles.continueButton}
@@ -25,6 +42,8 @@ const RegistroC = ({ navigation }) => {
       >
         <Text style={styles.continueButtonText}>Continuar</Text>
       </TouchableOpacity>
+=======
+>>>>>>> Stashed changes
     </View>
   );
 };
@@ -34,11 +53,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    paddingTop: 40,
+    paddingTop: 60,
   },
   progressBarContainer: {
     width: '90%',
-    height: 30,
+    height: 8,
     backgroundColor: '#E0E0E0',
     borderRadius: 70,
     position: 'relative',
@@ -49,16 +68,8 @@ const styles = StyleSheet.create({
   progressBar: {
     height: '100%',
     width: '100%',
-    backgroundColor: '#2E4B9C', // azul oscuro
+    backgroundColor: '#2E3870', // azul oscuro
     borderRadius: 70,
-  },
-  starIcon: {
-    position: 'absolute',
-    right: -10,
-    top: -8,
-    width: 60,
-    height: 45,
-    resizeMode: 'contain',
   },
   dialogBox: {
     backgroundColor: '#fff',
@@ -68,6 +79,7 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderWidth: 1,
     marginBottom: 10,
+    marginTop: 30,
     elevation: 4,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -82,7 +94,7 @@ const styles = StyleSheet.create({
   },
   lionImage: {
     width: 500,
-    height: 350,
+    height: 600,
     resizeMode: 'contain',
   },
   continueButton: {
@@ -100,3 +112,4 @@ const styles = StyleSheet.create({
 });
 
 export default RegistroC;
+

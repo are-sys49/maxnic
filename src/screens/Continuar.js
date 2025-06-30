@@ -11,12 +11,21 @@ export default function Continuar({ navigation }) {
   const [matricula, setMatricula] = useState(""); // Estado para matrícula
   const [password, setPassword] = useState(""); // Estado para contraseña
 
+<<<<<<< Updated upstream
  const avanzarPantalla = async () => {
   try {
     const response = await axios.post('http://192.168.100.35:3000/Continuar', {
       matricula,
       password
     });
+=======
+  const avanzarPantalla = async () => {
+    try {
+      const response = await axios.post('http://192.168.100.68:3000/Continuar', {
+        matricula,
+        password
+      });
+>>>>>>> Stashed changes
 
     const user = response.data.user;
     if (!user) {
@@ -104,7 +113,11 @@ const styles = StyleSheet.create({
   },
   progressBarContainer: {
     width: '100%',
+<<<<<<< Updated upstream
     height: 30,
+=======
+    height: 8,
+>>>>>>> Stashed changes
     backgroundColor: '#e0e0e0',
     borderRadius: 70,
     marginTop: 75,
@@ -112,7 +125,7 @@ const styles = StyleSheet.create({
   },
   progressBar: {
     height: '100%',
-    backgroundColor: '#0056b3',
+    backgroundColor: '#274BAB',
   },
   dialogContainer: {
     marginVertical: 50,
@@ -124,7 +137,7 @@ const styles = StyleSheet.create({
   },
   dialogText: {
     fontSize: 18,
-    color: '#0056b3',
+    color: '#274BAB',
     textAlign: 'center',
   },
   image: {
@@ -139,7 +152,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#0056b3',
+    color: '#274BAB',
     marginBottom: 10,
   },
   input: {
@@ -154,7 +167,7 @@ const styles = StyleSheet.create({
   continueButton: {
     width: '80%',
     height: 50,
-    backgroundColor: '#0056b3',
+    backgroundColor: '#274BAB',
     borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',

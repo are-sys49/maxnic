@@ -11,7 +11,11 @@ export default function Login({ navigation }) {
 
   const handleLogin = async () => {
   try {
+<<<<<<< Updated upstream
     const response = await axios.post('http://192.168.100.35:3000/Login', {
+=======
+    const response = await axios.post('http://192.168.100.68:3000/Login', {
+>>>>>>> Stashed changes
       matricula,
       password,
     });
@@ -123,7 +127,7 @@ const styles = StyleSheet.create({
   },
   inputPassword: { flex: 1, paddingVertical: 12, fontSize: 16 },
   loginButton: {
-    backgroundColor: '#132257',
+    backgroundColor: '#2E3870',
     padding: 15,
     borderRadius: 10,
     marginTop: 20,

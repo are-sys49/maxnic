@@ -38,12 +38,57 @@ export default function Perfil({ navigation }) {
       loadUserData();
     }, []);
 
+<<<<<<< Updated upstream
+=======
+  // Generar datos para el QR (perfil del usuario)
+  const generateQRData = () => {
+    const profileData = {
+      nombre: `${userData.nombre} ${userData.app}`,
+      matricula: userData.matricula,
+      academia: userData.academia,
+      sede: userData.sede,
+      centro: "Centro Universitario DIPA",
+      username: "Maxnic",
+      whatsapp: "3315857228",
+      instagram: "dipa_oficial",
+      facebook: "Centro Universitario DIPA"
+    };
+    return JSON.stringify(profileData);
+  };
+
+  // Función para guardar la imagen en la galería
+  const saveImageToGallery = async () => {
+    try {
+      // Solicitar permisos
+      const { status } = await MediaLibrary.requestPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Error', 'Se necesitan permisos para guardar la imagen');
+        return;
+      }
+
+      // Capturar la vista como imagen
+      const uri = await viewShotRef.current.capture({
+        format: 'png',
+        quality: 1.0,
+      });
+
+      // Guardar en la galería
+      const asset = await MediaLibrary.createAssetAsync(uri);
+      await MediaLibrary.createAlbumAsync('DIPA Cards', asset, false);
+      
+      Alert.alert('Éxito', 'Imagen guardada en la galería');
+    } catch (error) {
+      console.error('Error al guardar imagen:', error);
+      Alert.alert('Error', 'No se pudo guardar la imagen');
+    }
+  };
+
+>>>>>>> Stashed changes
   return (
     <ScrollView style={styles.container}>
       {/* Botón Atrás y Configuración */}
       <View style={styles.header}>
         <Ionicons name="arrow-back-outline" size={24} color="#000" onPress={() => navigation.goBack()} />
-        <Ionicons name="settings-outline" size={24} color="#000" />
       </View>
 
       {/* Mensaje superior */}
